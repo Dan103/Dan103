@@ -156,7 +156,7 @@ With all duplicates removed and columns streamlined, I performed the final queri
 1. **Clone or Download** this repository (`My_Portfolio_Projects`), then open `Vienna_mobility_project`.
 
 2. **Check `cleaned_data/`**  
-   - It contains the five merged, cleaned CSVs obtained originally from data.gv.at.(Check original data for original uncleaned, unmerged data)
+   - It contains the five merged, cleaned CSVs obtained originally from data.gv.at. (Check `original_data/`** for original uncleaned, unmerged data)
 
 3. **Run `create_clean_tables.sql`**  
    - This script sets up the final schema, cleans duplicates, and renames columns.
