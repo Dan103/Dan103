@@ -1,121 +1,170 @@
 # Vienna Mobility Project
 
-This project analyzes Vienna’s mobility data from multiple open-data files originally obtained from [data.gv.at](https://www.data.gv.at/). The source datasets included columns like `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE`, `YEAR`, `REF_YEAR`, and specific measures such as passenger counts, vehicle counts, mode shares, or annual ticket numbers. Below are the **original fields** (in German and English) and which ones **remain** in our final tables.
+This project analyzes Vienna’s mobility data—annual public transport tickets, ridership, car ownership, and mode shares. The goal is to demonstrate data cleaning, transformation, and advanced SQL querying for real-world insights into urban mobility.
 
 ---
 
-## **Original Datasets & Columns**
+## Data Files & Column Details
 
-### 1. Jahreskarten der Wiener Linien Wien
-- **NUTS1**: AT1 for Ostösterreich  
-- **NUTS2**: AT13 for Bundesland Wien  
-- **NUTS3**: AT130 for Stadt Wien  
-- **DISTRICT_CODE**: 90001 for Wien  
-- **SUB_DISTRICT_CODE**: 0 (not used)  
-- **YEAR**: The year for which the values apply  
-- **REF_YEAR**: The data year  
-- **ANNUAL_TICKETS** (Anzahl von Jahreskarten)
+The original datasets came from multiple yearly CSV files on [data.gv.at](https://www.data.gv.at/). After merging each dataset by year, we ended up with **five** consolidated files representing:
 
-In the **final** table `annual_tickets`, I **removed** columns such as `NUTS1, NUTS2, NUTS3, DISTRICT_CODE, SUB_DISTRICT_CODE, REF_YEAR`. I **kept** `YEAR` (renamed to `data_year` in some steps) and `ANNUAL_TICKETS` (renamed to `ticket_count`).
+1. **Jahreskarten der Wiener Linien Wien**  
+   - **Original Columns**  
+     - `NUTS1` (AT1 für Ostösterreich)  
+     - `NUTS2` (AT13 für Bundesland Wien)  
+     - `NUTS3` (AT130 für Stadt Wien)  
+     - `DISTRICT_CODE` (90001 für Wien)  
+     - `SUB_DISTRICT_CODE` (0 da nicht verwendet)  
+     - `YEAR` (Jahr, für das die Werte gelten)  
+     - `REF_YEAR` (Datenjahr)  
+     - `ANNUAL_TICKETS` (Anzahl von Jahreskarten)  
+   - **Included in Final Table**  
+     - `YEAR` was renamed or stored as `data_year`  
+     - `ANNUAL_TICKETS` was renamed to `ticket_count`  
+   - **Dropped / Not Imported**  
+     - `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE` were excluded when using the Table Data Import Wizard (redundant for our analysis).  
+     - `REF_YEAR` was later removed to keep only one year column.
 
-### 2. Fahrgastzahlen der Wiener Linien Wien
-- **NUTS1**: AT1 for Ostösterreich  
-- **NUTS2**: AT13 for Bundesland Wien  
-- **NUTS3**: AT130 for Stadt Wien  
-- **DISTRICT_CODE**: 90001 for Wien  
-- **SUB_DISTRICT_CODE**: 0 (not used)  
-- **YEAR**: The year for which the values apply  
-- **REF_YEAR**: The data year  
-- **BUS** (Autobus)  
-- **TRAM** (Straßenbahn)  
-- **UNDERGROUND** (U-Bahn)
+2. **Fahrgastzahlen der Wiener Linien Wien**  
+   - **Original Columns**  
+     - `NUTS1` (AT1 für Ostösterreich)  
+     - `NUTS2` (AT13 für Bundesland Wien)  
+     - `NUTS3` (AT130 für Stadt Wien)  
+     - `DISTRICT_CODE` (90001 für Wien)  
+     - `SUB_DISTRICT_CODE` (0 da nicht verwendet)  
+     - `YEAR` (Jahr)  
+     - `REF_YEAR` (Datenjahr)  
+     - `BUS` (Autobus)  
+     - `TRAM` (Straßenbahn)  
+     - `UNDERGROUND` (U-Bahn)  
+   - **Included in Final Table**  
+     - `YEAR` → stored as `data_year`  
+     - `BUS`, `TRAM`, `UNDERGROUND` columns kept  
+   - **Dropped / Not Imported**  
+     - `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE` removed  
+     - `REF_YEAR` removed in a later step
 
-In the **final** table `ridership`, I **removed** `NUTS1, NUTS2, NUTS3, DISTRICT_CODE, SUB_DISTRICT_CODE, REF_YEAR` and **kept** `YEAR` (as `data_year`), plus `BUS`, `TRAM`, `UNDERGROUND`.
+3. **Jahreskarten und PKW seit 2002 – Wien**  
+   - **Original Columns**  
+     - `NUTS` | NUTS2-Region  
+     - `DISTRICT_CODE` (Gemeindebezirkskennzahl)  
+     - `SUB_DISTRICT_CODE` (Zählbezirkskennzahl)  
+     - `REF_YEAR`  
+     - `REF_DATE`  
+     - `TIC_VALUE` (Ausgestellte Wiener Linien Jahreskarten)  
+     - `PKW_VALUE` (Zugelassene PKW)  
+     - `TIC_DENSITY` (Ausgestellte Wiener Linien Jahreskarten pro 1.000 EinwohnerInnen)  
+     - `PKW_DENSITY` (Zugelassene PKW pro 1.000 EinwohnerInnen)  
+   - **Included in Final Table** (renamed `annual_tickets_cars`)  
+     - `REF_YEAR` → became `data_year`  
+     - `TIC_VALUE` 
+     - Other columns (`PKW_VALUE`, densities) were partially excluded or not used for final tasks. (We only needed `data_year`, `tic_value`. We did not rely on PKW columns in this script’s final queries, though they remained in the table.)
+   - **Dropped / Not Imported**  
+     - `NUTS`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE`, `REF_DATE` not used in final analysis  
+     - Some rows not imported at first due to data mismatch—subsequently corrected by manually editing the file in Excel (removing commas/periods) and running CREATE/INSERT commands.
 
-### 3. Jahreskarten und PKW seit 2002 – Wien
-- **NUTS**: NUTS2-Region (Bundesland)  
-- **DISTRICT_CODE**: Gemeindebezirkskennzahl (Schema: 9BBZZ, where BB=Bezirk, ZZ=00)  
-- **SUB_DISTRICT_CODE**: Zählbezirkskennzahl gemäß Stadt Wien (9BBZZ, with 99 if unknown)  
-- **REF_YEAR**: Reference year  
-- **REF_DATE**: Reference date  
-- **TIC_VALUE**: Ausgestellte Wiener Linien Jahreskarten  
-- **PKW_VALUE**: Zugelassene Kraftfahrzeuge - Personenkraftwagen (inkl. Autotaxi)  
-- **TIC_DENSITY**: Ausgestellte Wiener Linien Jahreskarten pro 1.000 EinwohnerInnen  
-- **PKW_DENSITY**: PKW pro 1.000 EinwohnerInnen
+4. **PKW-Bestand und EinwohnerInnen Wien**  
+   - **Original Columns**  
+     - `NUTS1` (AT1 für Ostösterreich)  
+     - `NUTS2` (AT13 für Bundesland Wien)  
+     - `NUTS3` (AT130 für Stadt Wien)  
+     - `DISTRICT_CODE` (90001 für Wien)  
+     - `SUB_DISTRICT_CODE` (0 da nicht verwendet)  
+     - `YEAR` (Jahr)  
+     - `REF_YEAR` (Datenjahr)  
+     - `DISTRICT` (Name des Bezirks)  
+     - `PASSENGER_CARS` (Anzahl der PKW)  
+     - `POPULATION` (Bevölkerungszahl)  
+   - **Included in Final Table** (`pkw_population`)  
+     - `YEAR` → `data_year`  
+     - `DISTRICT`  
+     - `PASSENGER_CARS`  
+     - `POPULATION`  
+   - **Dropped / Not Imported**  
+     - `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE` removed  
+     - `REF_YEAR` removed later
 
-In the **final** table `annual_tickets_cars`, I **renamed** `REF_YEAR` to `data_year`, dropped other unneeded columns, and kept `tic_value`. We did **not** retain PKW columns here in the final CSV; only `data_year` and `tic_value` remain (some rows might vary depending on your merges).
-
-### 4. PKW-Bestand und EinwohnerInnen Wien
-- **NUTS1**: AT1 for Ostösterreich  
-- **NUTS2**: AT13 for Bundesland Wien  
-- **NUTS3**: AT130 for Stadt Wien  
-- **DISTRICT_CODE**: 90001 for Wien  
-- **SUB_DISTRICT_CODE**: 0 (not used)  
-- **YEAR**: The year for which the values apply  
-- **REF_YEAR**: The data year  
-- **DISTRICT**: Name des Bezirks  
-- **PASSENGER_CARS**: Anzahl der PKW  
-- **POPULATION**: Bevölkerungszahl
-
-In the **final** table `pkw_population`, columns like `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE`, and `REF_YEAR` were removed. We **kept** `YEAR` (called `data_year`), `DISTRICT`, `PASSENGER_CARS`, and `POPULATION`.
-
-### 5. Verkehrsmittelwahl Wien
-- **NUTS1**: AT1 for Ostösterreich  
-- **NUTS2**: AT13 for Bundesland Wien  
-- **NUTS3**: AT130 for Stadt Wien  
-- **DISTRICT_CODE**: 9 for Wien  
-- **SUB_DISTRICT_CODE**: 0 (not used)  
-- **YEAR**: The year for which the share applies  
-- **BICYCLE**: Anteil Fahrräder  
-- **BY_FOOT**: Anteil zu Fuß  
-- **CAR**: Anteil PKW  
-- **MOTORCYCLE**: Anteil Motorräder  
-- **PUBLIC_TRANSPORT**: Anteil öffentlicher Verkehr
-
-In the **final** table `mode_share`, we removed `NUTS1, NUTS2, NUTS3, DISTRICT_CODE, SUB_DISTRICT_CODE`. We **kept** `YEAR` (renamed to `data_year`) and the percentage columns like `bicycle, by_foot, car, public_transport`, etc.
-
----
-
-## **Project Steps**
-
-1. **Data Merging**  
-   I merged all yearly CSVs for each dataset using a file merging service and ended up with five consolidated CSVs. Then I selectively imported columns and rows into MySQL Workbench.
-
-2. **Last File Conversion**  
-   One dataset was converted from CSV to SQL manually, where I dropped unnecessary columns in Excel, then used `CREATE TABLE` and `INSERT` statements to finalize the import.
-
-3. **Schema Adjustments**  
-   - Renamed columns such as `ref_year` to `data_year` for consistency.  
-   - Dropped extra columns like `NUTS1, NUTS2, DISTRICT_CODE` once I confirmed they were identical in all rows and unnecessary for the final queries.  
-   - Removed primary keys where the data wasn’t actually unique on that column combination.  
-   - Cleaned duplicates by creating “clean” tables using window functions or grouping, then replaced the originals.
-
-4. **Analysis**  
-   - I compared annual ticket counts with ridership totals to see if an increase in passes correlated with more usage.  
-   - I computed year-over-year growth in passes, ridership, and rides-per-ticket.  
-   - I ranked districts by the ratio of passenger cars to population.  
-   - I analyzed average mode shares (bicycle, by foot, car, public transport) and identified the top usage mode each year.
-
-## **Project Files**
-
-- **data/**  
-  Contains the merged CSVs for each dataset, reflecting the columns above. Some columns (like `NUTS1`, `DISTRICT_CODE`, `REF_YEAR`) were later dropped in MySQL.
-
-- **sql_scripts/**  
-  - **create_clean_tables.sql**  
-    Contains all commands to create (or use) `vienna_mobility`, rename columns, remove unwanted fields, and remove duplicates.  
-  - **analysis_queries.sql**  
-    Contains final advanced SQL queries that perform joins, aggregations, window function calculations, and mode share analyses.
-
-- **screenshots/** (Optional)  
-  Could hold images of MySQL Workbench or sample outputs.
+5. **Verkehrsmittelwahl Wien**  
+   - **Original Columns**  
+     - `NUTS1` (AT1 für Ostösterreich)  
+     - `NUTS2` (AT13 für Bundesland Wien)  
+     - `NUTS3` (AT130 für Stadt Wien)  
+     - `DISTRICT_CODE` (9 für Wien)  
+     - `SUB_DISTRICT_CODE` (0 da nicht verwendet)  
+     - `YEAR` (Jahr)  
+     - `BICYCLE` (Anteil Fahrräder)  
+     - `BY_FOOT` (Anteil zu Fuß)  
+     - `CAR` (Anteil PKW)  
+     - `MOTORCYCLE` (Anteil Motorräder)  
+     - `PUBLIC_TRANSPORT` (Anteil öffentlicher Verkehr)  
+   - **Included in Final Table** (renamed `mode_share`)  
+     - `YEAR` → `data_year`  
+     - `bicycle`, `by_foot`, `car`, `motorbike`(or `motorcycle`), `public_transport`  
+   - **Dropped / Not Imported**  
+     - `NUTS1`, `NUTS2`, `NUTS3`, `DISTRICT_CODE`, `SUB_DISTRICT_CODE` removed  
+     - Extra columns like `bikesharing` or `carsharing` might be partially used or dropped, depending on final merges.  
+     - Some rows not imported (only partial data used).
 
 ---
 
-## **How to Run**
+## Course of Events
 
-1. **Clone or Download** this repository.  
-2. **Open MySQL Workbench** or another client, and connect to your MySQL server.  
-3. **Run `create_clean_tables.sql`**:
-   ```sql
-   SOURCE /path/to/sql_scripts/create_clean_tables.sql;
+1. **Data Acquisition & Merging**  
+   - Found necessary yearly CSV files on [data.gv.at](https://www.data.gv.at/).  
+   - Merged each dataset’s CSVs (2015–2021 or 2002–2021) into a single file with a file merging service, resulting in five combined CSVs (one for each of the data types above).
+
+2. **Initial Database & Table Creation**  
+   - Opened **MySQL Workbench**, created the `vienna_mobility` database:
+     ```sql
+     CREATE DATABASE IF NOT EXISTS vienna_mobility;
+     USE vienna_mobility;
+     ```
+   - Used **Table Data Import Wizard** for four of these CSVs, **selecting only** the columns/rows needed. (Not all columns were imported; columns like `NUTSx`, `DISTRICT_CODE`, etc., were excluded.)
+
+3. **Handling the Last File**  
+   - The last CSV had 100+ rows, but only ~80 were added automatically.  
+   - Instead, removed unneeded columns & rows in Excel, replaced commas/periods, then **converted** CSV to an `.sql` script (with `CREATE TABLE` and `INSERT` statements).  
+   - Executed that script to finalize the last table with correct data.
+
+4. **Schema Revisions & Data Cleaning**  
+   - **Renamed** columns (e.g., `ref_year` → `data_year`) to unify naming.  
+   - **Removed** any redundant primary keys and extra columns (`REF_YEAR`, `NUTS1`, `NUTS2`, etc.).  
+   - **Cleaned duplicates** by creating temp tables and grouping/aggregating:
+     - Example: 
+       ```sql
+       CREATE TABLE annual_tickets_clean AS
+       SELECT data_year, MAX(ticket_count) ticket_count
+       FROM annual_tickets
+       GROUP BY data_year;
+       DROP TABLE annual_tickets;
+       RENAME TABLE annual_tickets_clean TO annual_tickets;
+       ```
+   - After these steps, the final tables were consistent and free of duplicates.
+
+5. **Advanced Queries & Final Tasks**  
+   - Wrote joins to compare annual tickets vs. ridership (`rides per ticket`).  
+   - Calculated **year-over-year** growth for both tickets and ridership.  
+   - Summarized passenger car usage (`cars_per_1000_people` by district).  
+   - Analyzed mode share (bicycle, car, public transport, etc.) and identified each year’s **top mode**.
+
+With all duplicates removed and columns streamlined, I performed the final queries without issues.
+
+---
+
+## How to Use This Project
+
+1. **Clone or Download** this repository (`My_Portfolio_Projects`), then open `Vienna_mobility_project`.
+
+2. **Check `cleaned_data/`**  
+   - It contains the five merged, cleaned CSVs obtained originally from data.gv.at.(Check original data for original uncleaned, unmerged data)
+
+3. **Run `create_clean_tables.sql`**  
+   - This script sets up the final schema, cleans duplicates, and renames columns.
+
+4. **Run `analysis_queries.sql`**  
+   - Produces the advanced queries comparing ticket counts, ridership, car ownership, and mode shares.
+
+5. **Review Output**  
+   - Observe the results in MySQL Workbench (e.g. “rides_per_ticket” column or “top 5 districts by car ownership”).
+
+By following these steps, you can replicate the entire process, from partial CSVs to final analysis. This demonstrates my experience in data wrangling, SQL transformations, and generating meaningful insights from real-world mobility data for Vienna.
