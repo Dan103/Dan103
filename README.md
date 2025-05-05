@@ -29,9 +29,9 @@ Welcome to my portfolio! Below is a summary of my key projects, organized by too
 
 ## Power BI
 
-| Project Link                 | Completion Date | Description                                          | Report Link           |
+| Project Link                 | Completion Date | Description | Report Link |
 |------------------------------|-----------------|------------------------------------------------------|-----------------------|
-| [📊Company Performance Analysis](link-to-repo) | Apr 2025        | Built a live sales dashboard in Power BI Service.    | [Live Report](…)      |
+| [📊Company Performance Analysis](link-to-repo) | Apr 2025 | Built a live sales dashboard in Power BI Service.| [Live Report](…) |
 --- 
 
 
