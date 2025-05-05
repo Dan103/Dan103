@@ -16,7 +16,7 @@ Welcome to my portfolio! Below is a summary of my key projects, organized by too
 
 | Project Link                 | Completion Date | Tools               | Description                                             |
 |------------------------------|-----------------|---------------------|---------------------------------------------------------|
-| [💶Credit Risk Analysis](link-to-repo) | Apr 2025        | Python (pathlib(stdlib), pandas, seaborn, matplotlib.pyplot) , R (ggplot2, dplyr, arrow) | Cleaned & modeled data; wrote Jupyter notebooks and RMarkdown reports. |
+| [💶Credit Risk Analysis](link-to-repo) | Apr 2025        | Python (pathlib(stdlib), pandas, seaborn, matplotlib.pyplot) , R (ggplot2, dplyr, arrow) | Built a Python & R credit‐risk data pipeline: loaded, inspected, cleaned & enriched raw data; performed EDA and cross-validated with summary reports and visualizations. |
 ---
 
 ## SQL + Tableau
