@@ -23,8 +23,8 @@ Welcome to my portfolio! Below is a summary of my key projects, organized by too
 
 | Project Link | Completion Date | Description                                      | Dashboard Link            |
 |--------------|-----------------|--------------------------------------------------|---------------------------|
-| [🚇Wiener Linien Data Analysis](link-to-repo) | Apr 2025        | SQL, Tableau     | Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](…) |
-| [💼Company Layoffs Analysis](link-to-repo) | Apr 2025        | SQL, Tableau     | Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](…) |
+| [🚇Wiener Linien Data Analysis](link-to-repo) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](…) |
+| [💼Company Layoffs Analysis](link-to-repo) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](…) |
 ---
 
 ## Power BI
