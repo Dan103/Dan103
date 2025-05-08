@@ -1,6 +1,4 @@
-# Your Name’s Data Analytics Portfolio
-
-Welcome to my portfolio! Below is a summary of my key projects, organized by toolset.
+# Daniel’s Data Analytics Portfolio
 
 ## Table of Contents
 
