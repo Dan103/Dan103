@@ -2,11 +2,12 @@
 
 ## Table of Contents
 
-- [Python + R](#Python + R)
-- [SQL + Tableau](#sql--tableau-projects)  
-- [Power BI](#power-bi-projects)  
-- [Tableau](#tableau-projects) 
-- [Excel](#excel-projects)   
+- [Python + R](#python-r)
+- [SQL + Tableau](#sql-tableau)
+- [Power BI](#power-bi)
+- [Tableau](#tableau)
+- [Excel](#excel)
+
 
 ---
 
