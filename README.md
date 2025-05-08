@@ -22,15 +22,15 @@
 
 | Project Link | Completion Date | Description                                      | Dashboard Link            |
 |--------------|-----------------|--------------------------------------------------|---------------------------|
-| [🚇Wiener Linien Data Analysis](https://github.com/Dan103/Wiener-Linien-Data-Analysis) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](https://public.tableau.com/app/profile/danylo.butynskyy/viz/WienerLinienDataAnalysis/WienerLinienDashboard) |
-| [💼Company Layoffs Analysis](https://github.com/Dan103/Layoff-Analysis-Across-Companies) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [View on Tableau Public](https://public.tableau.com/app/profile/danylo.butynskyy/viz/LayoffAnalysisAcrossCompanies/LayoffsDashboard) |
+| [🚇Wiener Linien Data Analysis](https://github.com/Dan103/Wiener-Linien-Data-Analysis) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [Dashboard Live](https://public.tableau.com/app/profile/danylo.butynskyy/viz/WienerLinienDataAnalysis/WienerLinienDashboard) |
+| [💼Company Layoffs Analysis](https://github.com/Dan103/Layoff-Analysis-Across-Companies) | Apr 2025        |  Wrote complex SQL to prep data; built interactive dashboards in Tableau Public. | [Dashboard Live](https://public.tableau.com/app/profile/danylo.butynskyy/viz/LayoffAnalysisAcrossCompanies/LayoffsDashboard) |
 ---
 
 ## Power BI
 
-| Project Link                 | Completion Date | Description | Report Link |
+| Project Link                 | Completion Date | Description | Dashboard Link |
 |------------------------------|-----------------|------------------------------------------------------|-----------------------|
-| [📊Company Performance Analysis](https://github.com/Dan103/Company-Performance-Analysis) | Apr 2025 | Built a live sales dashboard in Power BI Service.| [Live Report](https://app.powerbi.com/view?r=eyJrIjoiMjFlZjFhZTgtYTUyYi00ODAzLWIwMzctOGMzMTk5MWU5YTMxIiwidCI6IjA1MDRmNzIxLWQ0NTEtNDAyYi1iODg0LTM4MTQyODU1OWUzOSIsImMiOjh9&pageName=a3dbadc54af337fe9bbc) |
+| [📊Company Performance Analysis](https://github.com/Dan103/Company-Performance-Analysis) | Apr 2025 | Built a live sales dashboard in Power BI Service.| [Dashboard Live](https://app.powerbi.com/view?r=eyJrIjoiMjFlZjFhZTgtYTUyYi00ODAzLWIwMzctOGMzMTk5MWU5YTMxIiwidCI6IjA1MDRmNzIxLWQ0NTEtNDAyYi1iODg0LTM4MTQyODU1OWUzOSIsImMiOjh9&pageName=a3dbadc54af337fe9bbc) |
 --- 
 
 
@@ -38,7 +38,7 @@
 
 | Project Link | Completion Date | Description                                      | Dashboard Link            |
 |--------------|-----------------|--------------------------------------------------|---------------------------|
-| [🏘️Vienna Airbnb Analysis](https://github.com/Dan103/Vienna-Airbnb-Analysis)      | Apr 2025        | Analyzed sales & customer data; visualized KPIs. | [View on Tableau Public](https://public.tableau.com/app/profile/danylo.butynskyy/viz/ViennaAirbnbAnalysis/AirbnbDashboard) |
+| [🏘️Vienna Airbnb Analysis](https://github.com/Dan103/Vienna-Airbnb-Analysis)      | Apr 2025        | Analyzed sales & customer data; visualized KPIs. | [Dashboard Live](https://public.tableau.com/app/profile/danylo.butynskyy/viz/ViennaAirbnbAnalysis/AirbnbDashboard) |
 ---
 
 ## Excel
