@@ -45,7 +45,7 @@
 | Project Link        | Completion Date | Description                                                      |
 |---------------------|-----------------|------------------------------------------------------------------|
 | [🗄️Employee Data Analysis](https://github.com/Dan103/Employee-Data-Analysis) | Apr 2025        | Performed pivot-table EDA, built financial dashboard with Power Query. |
-| [🚲Bike Purchases Analysis]([link-to-repo](https://github.com/Dan103/Bike-Purchases-Analysis)) | Apr 2025        | Performed pivot-table EDA, built financial dashboard with Power Query. |
+| [🚲Bike Purchases Analysis](https://github.com/Dan103/Bike-Purchases-Analysis) | Apr 2025        | Performed pivot-table EDA, built financial dashboard with Power Query. |
 
 
 ---
